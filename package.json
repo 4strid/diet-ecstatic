@@ -1,0 +1,41 @@
+{
+  "name": "diet-ecstatic",
+  "version": "1.0.0",
+  "description": "Static middleware for breezily deploying static content in Diet.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape ./test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cutejs/diet-ecstatic.git"
+  },
+  "keywords": [
+    "static",
+    "middleware",
+    "diet",
+    "dietjs",
+    "diet.js",
+    "send",
+    "public",
+    "html",
+    "path",
+    "files"
+  ],
+  "author": "Peter Fesz-Nguyen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cutejs/diet-ecstatic/issues"
+  },
+  "homepage": "https://github.com/cutejs/diet-ecstatic#readme",
+  "dependencies": {
+    "chokidar": "^2.0.4",
+    "mime": "^2.3.1",
+    "zlib": "^1.0.5"
+  },
+  "devDependencies": {
+    "diet": "^0.16.0",
+    "diet-connect": "^1.2.2",
+    "morgan": "^1.9.0"
+  }
+}
