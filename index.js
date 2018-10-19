@@ -11,10 +11,11 @@ const gzipStream = require('zlib').createGzip
 
 function Static (opts) {
 	const staticRoot = opts.path
+	const maxCachedSize = 'maxCachedSize' in opts ? opts.maxCachedSize : 1024 * 50
+	const expirationOffset = 'expires' in opts ? opts.expires : 1000 * 60 * 60 * 24
+	const defaultExtension = opts.defaultExtension || '.html'
+
 	const fileTable = {}
-	const maxCachedSize = opts.maxCachedSize || 1024 * 100
-	//const expirationOffset = opts.expires || 1000 * 60 * 60 * 24 * 7
-	const expirationOffset = opts.expires || 10
 	
 	const watcher = chokidar.watch(staticRoot)
 
@@ -40,7 +41,7 @@ function Static (opts) {
 		const extension = path.extname(filepath)
 		const basename = path.basename(filepath)
 
-		const shouldGzip = opts.gzip !== false && stats.size > 1400 && gzipTypes[mimeType]
+		const shouldGzip = opts.gzip !== false && stats.size > 1500 && gzipTypes[mimeType]
 
 		const file = {
 			file: filepath,
@@ -57,15 +58,15 @@ function Static (opts) {
 			}
 		}
 
-		if (basename === 'index.html') {
+		if (opts.autoindex !== false && basename === 'index.html') {
 			const dirname = path.dirname(filepath)
 			const _path = getStaticPath(staticRoot, dirname)
 			fileTable[_path] = file
 		}
 
-		if (extension === '.html') {
+		if (opts.defaultExtension !== false && extension === defaultExtension) {
 			const dirname = path.dirname(filepath)
-			const basename = path.basename(filepath, '.html')
+			const basename = path.basename(filepath, defaultExtension)
 			const _path = getStaticPath(staticRoot, dirname) + basename
 			fileTable[_path] = file
 		}
@@ -110,8 +111,19 @@ function Static (opts) {
 					} else {
 						stream.pipe($.response)
 					}
+					let streamError = null
 					stream.on('error', err => {
-						throw err
+						streamError = err
+						stream.destroy()
+					})
+					stream.on('close', () => {
+						if (!streamError) {
+							$.responded = true
+							$.return()
+						} else {
+							$.header('Content-Encoding', 'identity')
+							throw streamError
+						}
 					})
 				}
 			} else {

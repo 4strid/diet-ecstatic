@@ -9,7 +9,7 @@ const app = server()
 
 app.listen('http://localhost:7789')
 
-const _static = Static({ path: path.resolve(__dirname, 'test/static') })
+const _static = Static({ path: app.path + '/test/static' })
 
 const cuteDocsStatic = Static({ path: path.resolve(__dirname, 'test/cutedocs') })
 
