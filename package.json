@@ -1,6 +1,6 @@
 {
   "name": "diet-ecstatic",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Static middleware for breezily deploying static content in Diet.js",
   "main": "ecstatic.js",
   "scripts": {
@@ -30,8 +30,7 @@
   "homepage": "https://github.com/cutejs/diet-ecstatic#readme",
   "dependencies": {
     "chokidar": "^2.0.4",
-    "mime": "^2.3.1",
-    "zlib": "^1.0.5"
+    "mime": "^2.3.1"
   },
   "devDependencies": {
     "diet": "^0.16.0",
